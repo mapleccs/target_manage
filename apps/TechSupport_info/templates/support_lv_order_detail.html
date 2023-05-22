@@ -1,0 +1,25 @@
+{% extends 'support_layout.html' %}
+
+{% block content %}
+    <div class="container" style="margin-top: 10px; margin-bottom: 20px">
+        <div class="card">
+            <div class="card-header">更多订单信息</div>
+            <form method="post" novalidate>
+                <div class="card-body">
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label>{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-success" type="submit" href="/support/lv_order/list/">确定</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

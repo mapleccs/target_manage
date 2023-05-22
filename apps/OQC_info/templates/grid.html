@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>方格界面</title>
+    <style>
+        .grid-cell {
+            display: inline-block;
+            width: 60px; /* 设置输入框宽度 */
+            height: 60px; /* 设置输入框高度 */
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <h1>方格界面</h1>
+    <table>
+        <tr>
+            <th></th>  <!-- 空白单元格 -->
+            {% for number in numbers %}
+                <th>{{ number }}</th>  <!-- 横行的数字 -->
+            {% endfor %}
+        </tr>
+        {% for i in letters %}
+            <tr>
+                <th>{{ i }}</th>  <!-- 竖列的字母 -->
+                {% for j in grid %}
+                    <td class="grid-cell">
+                        <input type="text" name="cell_{{ i }}{{ j.0 }}" value="{{ j.1.value }}">
+                    </td>  <!-- 方格 -->
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <input type="submit" value="保存">
+</body>
+</html>

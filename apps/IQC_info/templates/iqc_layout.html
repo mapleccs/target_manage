@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>质检组管理系统</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.0/css/../../LV_info/static/plugins/bootstrap-5.3.0/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/css/../../LV_info/static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css' %}">
+    {% block css %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/iqc/order/list/">质检组管理系统</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/iqc/order/list/">慢病毒订单信息</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">腺病毒订单信息</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">腺相关订单信息</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">待开发模块</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div>
+    {% block content %}{% endblock %}
+</div>
+
+<script src="{% static 'js/../../LV_info/static/js/jquery-3.6.4.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.3.0/js/../../LV_info/static/plugins/bootstrap-5.3.0/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/js/../../LV_info/static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/locales/../../LV_info/static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js' %}"></script>
+{% block js %}{% endblock %}
+</body>
+</html>

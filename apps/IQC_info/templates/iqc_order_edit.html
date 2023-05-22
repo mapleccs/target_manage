@@ -1,0 +1,51 @@
+{% extends 'iqc_layout.html' %}
+
+{% block content %}
+    <div class="container" style="margin-top: 10px; margin-bottom: 20px">
+        <div class="card">
+            <div class="card-header">修改订单信息</div>
+            <form method="post" novalidate>
+                <div class="card-body">
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label>{{ field.label }}</label>
+                            {{ field }}
+                        <span style="color: red;">{{ field.errors.0 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" type="submit">保存</button>
+                        <a class="btn btn-primary" href="/iqc/order/list/">取消</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            // dateClickEvent: 用来添加时间组件
+            dateClickEvent();
+        })
+
+
+        function dateClickEvent() {
+            $("#id_infection_date").datepicker({
+                format: "yyyy-mm-dd",
+                // startDate: '0',
+                language: "zh-CN",
+                autoclose: true
+            });
+            $("#id_lv_DeliveryDate").datepicker({
+                format: "yyyy-mm-dd",
+                // startDate: '0',
+                language: "zh-CN",
+                autoclose: true
+            });
+        }
+    </script>
+{% endblock %}

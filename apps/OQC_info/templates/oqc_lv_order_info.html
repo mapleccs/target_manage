@@ -1,0 +1,191 @@
+{% extends 'oqc_layout.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <!-- 按钮 -->
+        <div style="margin-bottom: 10px; margin-top: 10px">
+            <a class="btn btn-success" href="#" data-bs-toggle="modal" data-bs-target="#AddModal">新增订单</a>
+
+            <div style="float: right;width: 250px">
+                <form method="get">
+                    <div class="input-group">
+                        <label>
+                            <input type="text" class="form-control" name="q" placeholder="Search"
+                                   value="{{ search_data }}">
+                        </label>
+                        <span class="input-group-btn" style="margin-left: 5px">
+                        <button class="btn btn-outline-success" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                            </svg>
+                        </button>
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- 订单信息添加模态框 -->
+        <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">新增订单</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="formAdd" novalidate>
+                            <div class="clearfix">
+                                <div class="row row-cols-2">
+                                    {% for field in form %}
+                                        <div class="col">
+                                            <label>{{ field.label }}</label>
+                                            {{ field }}
+                                            <span class="error-msg" style="color: red">{{ field.errors }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="ModalBtnSave">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 表单 -->
+        <div class="card">
+
+            <!-- 表头 -->
+            <div class="card-header">订单列表</div>
+
+            <!-- 主体 -->
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead align="center">
+                    <tr>
+                        <th scope="col">订单号</th>
+                        <th scope="col">送检日期</th>
+                        <th scope="col">载体</th>
+                        <th scope="col">感染时间</th>
+                        <th scope="col">感染状态</th>
+                        <th scope="col">备注</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody align="center">
+                    {% for item in queryset %}
+                        <tr>
+                            <th scope="row">{{ item.order }}</th>
+                            <td>{{ item.lv_DeliveryDate|date:"Y-m-d"|default:_('') }}</td>
+                            <td>{{ item.vertor_name }}</td>
+                            <td>{{ item.infection_date }}</td>
+                            <td>{{ item.get_infection_status_display }}</td>
+                            <td>{{ item.Remarks }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-xs" href="#">编辑</a>
+                                <a class="btn btn-info btn-xs" href="#">更多信息</a>
+                                <a class="btn btn-success btn-xs" href="/oqc/lv_order/{{ item.id }}/download_json/">下载</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 页码显示 -->
+            <div class="card-footer">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">首页</a>
+                        </li>
+                        {{ page_str }}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_end }}">尾页</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            // bindBtnSaveEvent用来触发新增订单的模态框的保存
+            bindBtnSaveEvent();
+            dateClickEvent();
+        })
+
+        function bindBtnSaveEvent() {
+            $("#ModalBtnSave").click(function () {
+                // 每次点击时，清除错误信息
+                $(".error-msg").empty();
+                // 通过ajax向后台发送请求
+                $.ajax({
+                    url: "#",
+                    type: "post",
+                    data: $("#formAdd").serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.status) {
+                            // 创建完成后，清空模态框内容
+                            $("#formAdd")[0].reset();
+                            // 关闭模态框
+                            $('#AddModal').modal('hide');
+                            // 刷新页面
+                            location.reload()
+                        } else {
+                            $.each(res.error, function (name, errorlist) {
+                                $("#id_" + name).next().text(errorlist)
+                            })
+                        }
+                    }
+                });
+
+            });
+        }
+
+        function dateClickEvent() {
+            $("#id_plasmid_ReceiptDate").datepicker({
+                format: "yyyy-mm-dd",
+                // startDate: '0',
+                language: "zh-CN",
+                autoclose: true
+            });
+            $("#id_transfection_date").datepicker({
+                format: "yyyy-mm-dd",
+                // startDate: '0',
+                language: "zh-CN",
+                autoclose: true
+            });
+            $("#id_lv_CollectDate").datepicker({
+                format: "yyyy-mm-dd",
+                // startDate: '0',
+                language: "zh-CN",
+                autoclose: true
+            });
+            $("#id_lv_RurificationDate").datepicker({
+                format: "yyyy-mm-dd",
+                // startDate: '0',
+                language: "zh-CN",
+                autoclose: true
+            });
+            $("#id_lv_DeliveryDate").datepicker({
+                format: "yyyy-mm-dd",
+                // startDate: '0',
+                language: "zh-CN",
+                autoclose: true
+            });
+        }
+
+    </script>
+{% endblock %}

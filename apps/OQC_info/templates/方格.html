@@ -1,0 +1,41 @@
+{% extends '../../LV_info/templates/lv_layout.html' %}
+
+{% block css %}
+    <style>
+        span {
+            font-size: 2em;
+        }
+
+        #container {
+            display: grid;
+            grid-template-columns: repeat(10, 100px);
+            grid-template-rows: repeat(10, 100px);
+            justify-content: center;
+            align-content: center;
+        }
+
+        .item {
+            font-size: 2em;
+            text-align: center;
+            border: 1px solid #e5e4e9;
+            background-color: #4ba946;
+        }
+
+    </style>
+{% endblock %}
+{% block content %}
+    <div id="container">
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+        <div class="item">1</div>
+    </div>
+{% endblock %}
